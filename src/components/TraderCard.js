@@ -7,8 +7,9 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Link from 'next/link';
+import CheckIcon from '@mui/icons-material/Check';
 
-export default function TraderCard({ trader, onFollow }) {
+export default function TraderCard({ trader, onFollow, isFollowed }) {
   return (
     <Card
       component={Link}
@@ -39,8 +40,14 @@ export default function TraderCard({ trader, onFollow }) {
         <Typography color="text.secondary">Assets: {trader.assets.join(', ')}</Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" variant="contained" onClick={() => onFollow(trader.id)}>
-          Follow
+        <Button
+          size="small"
+          variant={isFollowed ? 'outlined' : 'contained'}
+          color="primary"
+          startIcon={isFollowed ? <CheckIcon /> : null}
+          onClick={e => { e.preventDefault(); e.stopPropagation(); onFollow(trader.id); }}
+        >
+          {isFollowed ? 'Following' : 'Follow'}
         </Button>
       </CardActions>
     </Card>

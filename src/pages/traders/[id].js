@@ -14,6 +14,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import TradeFeed from '../../components/TradeFeed';
+import LivePrices from '../../components/LivePrices';
 
 // Mock performance data
 const mockPerformance = [
@@ -45,7 +46,7 @@ const mockBios = {
   9: 'Ivy is a momentum trader in both stocks and crypto.',
 };
 
-export default function TraderProfile() {
+export default function TraderProfile({ darkMode, onToggleTheme }) {
   const router = useRouter();
   const { id } = router.query;
   const trader = mockTraders.find(t => t.id === Number(id));
@@ -76,7 +77,7 @@ export default function TraderProfile() {
   if (!trader) {
     return (
       <>
-        <NavBar />
+        <NavBar darkMode={darkMode} onToggleTheme={onToggleTheme} />
         <Container sx={{ py: 8 }}>
           <Typography variant="h5">Trader not found.</Typography>
         </Container>
@@ -89,32 +90,33 @@ export default function TraderProfile() {
 
   return (
     <>
-      <NavBar />
-      <Container maxWidth="md" sx={{ py: 6 }}>
-        <Button startIcon={<ArrowBackIcon />} onClick={() => router.push('/traders')} sx={{ mb: 3 }}>
+      <NavBar darkMode={darkMode} onToggleTheme={onToggleTheme} />
+      <Container maxWidth="md" sx={{ py: { xs: 2, sm: 6 } }}>
+        <LivePrices />
+        <Button startIcon={<ArrowBackIcon />} onClick={() => router.push('/traders')} sx={{ mb: 3, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
           Back to Traders
         </Button>
-        <Card sx={{ p: 4, mb: 4, display: 'flex', alignItems: 'center', gap: 4, boxShadow: 3, position: 'relative' }}>
-          <Avatar src={trader.avatar} alt={trader.name} sx={{ width: 80, height: 80 }} />
+        <Card sx={{ p: { xs: 2, sm: 4 }, mb: 4, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'flex-start', sm: 'center' }, gap: { xs: 2, sm: 4 }, boxShadow: 3, position: 'relative' }}>
+          <Avatar src={trader.avatar} alt={trader.name} sx={{ width: 80, height: 80, mb: { xs: 2, sm: 0 } }} />
           <Box flex={1}>
-            <Typography variant="h4">{trader.name}</Typography>
-            <Typography color="text.secondary" sx={{ mb: 1 }}>{mockBios[trader.id]}</Typography>
-            <Box display="flex" alignItems="center" gap={2} mb={1}>
-              <Typography variant="body1">Followers: <b>{trader.followers}</b></Typography>
-              <Typography variant="body1">Performance: <b>{trader.performance}%</b></Typography>
+            <Typography variant="h4" sx={{ fontSize: { xs: '1.3rem', sm: '2rem' } }}>{trader.name}</Typography>
+            <Typography color="text.secondary" sx={{ mb: 1, fontSize: { xs: '1rem', sm: '1.1rem' } }}>{mockBios[trader.id]}</Typography>
+            <Box display="flex" flexWrap="wrap" alignItems="center" gap={2} mb={1}>
+              <Typography variant="body1" sx={{ fontSize: { xs: '0.95rem', sm: '1rem' } }}>Followers: <b>{trader.followers}</b></Typography>
+              <Typography variant="body1" sx={{ fontSize: { xs: '0.95rem', sm: '1rem' } }}>Performance: <b>{trader.performance}%</b></Typography>
               {isTopPerformer && <Chip label="Top Performer" color="success" size="small" />}
             </Box>
             <Button
               variant={followed ? 'outlined' : 'contained'}
               color="primary"
               onClick={e => { e.stopPropagation(); handleFollow(); }}
-              sx={{ mt: 1, transition: 'all 0.2s', fontWeight: 600 }}
+              sx={{ mt: 1, transition: 'all 0.2s', fontWeight: 600, fontSize: { xs: '0.95rem', sm: '1rem' } }}
             >
               {followed ? 'Unfollow' : 'Follow'}
             </Button>
           </Box>
         </Card>
-        <Typography variant="h6" sx={{ mb: 2 }}>Performance</Typography>
+        <Typography variant="h6" sx={{ mb: 2, fontSize: { xs: '1.1rem', sm: '1.25rem' } }}>Performance</Typography>
         <ResponsiveContainer width="100%" height={200}>
           <LineChart data={mockPerformance}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -124,7 +126,7 @@ export default function TraderProfile() {
             <Line type="monotone" dataKey="value" stroke="#1976d2" strokeWidth={2} activeDot={{ r: 8 }} />
           </LineChart>
         </ResponsiveContainer>
-        <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>Recent Trades</Typography>
+        <Typography variant="h6" sx={{ mt: 4, mb: 2, fontSize: { xs: '1.1rem', sm: '1.25rem' } }}>Recent Trades</Typography>
         <TradeFeed trades={traderTrades} traders={[trader]} />
         <Snackbar
           open={!!snackbar}
