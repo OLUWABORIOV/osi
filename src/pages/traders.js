@@ -46,7 +46,13 @@ export default function Traders({ darkMode, onToggleTheme }) {
           <Tab label="All Traders" />
           <Tab label={<Badge color="primary" badgeContent={followed.length}>Following</Badge>} />
         </Tabs>
-        <Grid container columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} columnSpacing={{ xs: 2, sm: 3, md: 4 }} justifyContent="center">
+        <Grid
+          container
+          columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
+          columnSpacing={{ xs: 0, sm: 3, md: 4 }}
+          rowSpacing={{ xs: 2, sm: 3, md: 4 }}
+          justifyContent="center"
+        >
           {displayedTraders.length === 0 ? (
             <Grid xs={12}>
               <Typography color="text.secondary" align="center">
@@ -54,7 +60,16 @@ export default function Traders({ darkMode, onToggleTheme }) {
               </Typography>
             </Grid>
           ) : displayedTraders.map((trader) => (
-            <Grid key={trader.id} xs={1} sm={1} md={1} lg={1} display="flex" justifyContent="center">
+            <Grid
+              key={trader.id}
+              xs={1}
+              sm={1}
+              md={1}
+              lg={1}
+              display="flex"
+              justifyContent="center"
+              sx={{ width: { xs: '100%', sm: 'auto' } }}
+            >
               <TraderCard
                 trader={trader}
                 onFollow={handleFollow}
